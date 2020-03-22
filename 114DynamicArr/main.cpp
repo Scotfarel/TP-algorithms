@@ -12,6 +12,16 @@
 #include <cassert>
 
 
+int search_last_alive(int N, int k);
+
+int main() {
+    int N = 0, k = 0;
+    std::cin >> N >> k;
+    assert(N > 0 && k > 0);
+    std::cout << search_last_alive(N, k);
+    return 0;
+}
+
 class DynamicArr {
 public:
     DynamicArr() : buffer(nullptr), capacity(0), size(0) {};
@@ -21,10 +31,10 @@ public:
     DynamicArr& operator= (DynamicArr&&) = delete;
     ~DynamicArr() { delete[] buffer; }
 
-    int Size() const { return size; }
-    int GetAt(int index) const;
-    void Add(int element);
-    void Delete(int index);
+    int get_size() const { return size; }
+    int get_at(int index) const;
+    void append(int element);
+    void remove(int index);
 
 private:
     int *buffer;
@@ -35,13 +45,14 @@ private:
     void grow();
 };
 
-void DynamicArr::Delete(int index) {
+
+void DynamicArr::remove(int index) {
     assert(index >= 0 && index < size && buffer);
     std::copy(buffer + index + 1, buffer + size, buffer + index);
     size--;
 }
 
-int DynamicArr::GetAt(int index) const {
+int DynamicArr::get_at(int index) const {
     assert(index >= 0 && index < size && buffer);
     return buffer[index];
 }
@@ -55,7 +66,7 @@ void DynamicArr::grow() {
     capacity = newCapacity;
 }
 
-void DynamicArr::Add(int element) {
+void DynamicArr::append(int element) {
     if (size == capacity) {
         grow();
     }
@@ -70,29 +81,21 @@ int search_last_alive(int N, int k) {
 
     auto *arr = new DynamicArr;
     for(int i = 0; i < N; i++) {
-        arr->Add(i + 1);
+        arr->append(i + 1);
     }
 
     int step = 0;
-    while (arr->Size() > 1) {
-        for (int i = 0; i < arr->Size(); i++) {
+    while (arr->get_size() > 1) {
+        for (int i = 0; i < arr->get_size(); i++) {
             step++;
             if (!(step % k)) {
-                arr->Delete(i);
+                arr->remove(i);
                 i--;
             }
         }
     }
 
-    int winner = arr->GetAt(0);
+    int winner = arr->get_at(0);
     delete arr;
     return winner;
-}
-
-int main() {
-    int N = 0, k = 0;
-    std::cin >> N >> k;
-    assert(N > 0 && k > 0);
-    std::cout << search_last_alive(N, k);
-    return 0;
 }
