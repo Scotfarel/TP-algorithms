@@ -13,8 +13,14 @@
 #include <cassert>
 
 
+void input_list(int* arr, int size);
+void print_list(const int* arr, int size);
+
+void search_greater_or_equal(int* result_list, const int* sorted_list, int sorted_size,
+        const int* searching_list, int searching_size);
 int find_range(const int* arr, int size, int num);
 int find_insertion_point(const int* arr, int l_range, int r_range, int num);
+
 
 int main() {
     int N = 0, M = 0;
@@ -22,26 +28,40 @@ int main() {
     assert(N > 0 && M > 0);
 
     int* sorted_list = new int[N];
-    for (int i = 0; i < N; i++) {
-        std::cin >> sorted_list[i];
-    }
+    input_list(sorted_list, N);
 
     int* searching_list = new int[M];
-    int* results_list = new int[M];
-    for (int j = 0; j < M; j++) {
-        std::cin >> searching_list[j];
-        int r_index = find_range(sorted_list, N, searching_list[j]);
-        results_list[j] = find_insertion_point(sorted_list, r_index / 2, r_index, searching_list[j]);
-    }
+    input_list(searching_list, M);
 
-    for (int k = 0; k < M; k++) {
-        std::cout << results_list[k] << ' ';
-    }
+    int* result_list = new int[M];
+    search_greater_or_equal(result_list, sorted_list, N, searching_list, M);
+
+    print_list(result_list, M);
 
     delete[] sorted_list;
     delete[] searching_list;
-    delete[] results_list;
+    delete[] result_list;
     return 0;
+}
+
+void input_list(int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        std::cin >> arr[i];
+    }
+}
+
+void print_list(const int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << arr[i] << ' ';
+    }
+}
+
+void search_greater_or_equal(int* result_list, const int* sorted_list, int sorted_size,
+        const int* searching_list, int searching_size) {
+    for (int i = 0; i < searching_size; i++) {
+        int r_index = find_range(sorted_list, sorted_size, searching_list[i]);
+        result_list[i] = find_insertion_point(sorted_list, r_index / 2, r_index, searching_list[i]);
+    }
 }
 
 int find_range(const int* arr, int size, int num) {
