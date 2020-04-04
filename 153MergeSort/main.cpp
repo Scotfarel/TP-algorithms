@@ -14,7 +14,7 @@
 
 
 #include <iostream>
-#include <cstring>
+
 
 class Point{
 public:
@@ -87,7 +87,7 @@ void merge_sort(T* list, int size, Comparator comp) {
 
     T* sorted_list = new T[size];
     merge(sorted_list, list, mid, list + mid, size - mid, comp);
-    memcpy(list, sorted_list, size * sizeof(T));
+    std::copy(sorted_list, sorted_list + size, list);
     delete[] sorted_list;
 }
 
