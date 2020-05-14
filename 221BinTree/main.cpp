@@ -39,7 +39,7 @@ private:
 };
 
 template<class Value, class Comparator>
-void BST<Value, Comparator>::addNode(const Value &value) {
+void BST<Value, Comparator>::addNode(const Value& value) {
     bool added = false;
 
     Node* node = root;
@@ -116,13 +116,13 @@ int main()
     BST<int> BST;
     for (int i = 0; i < n; i++)
     {
-        int key = 0;
-        std::cin >> key;
-        BST.addNode(key);
+        int value = 0;
+        std::cin >> value;
+        BST.addNode(value);
     }
 
-    std::vector<int> values = BST.inOrder();
-    for (const auto& i: values) {
+    std::vector<int> inOrderValues = BST.inOrder();
+    for (const auto& i: inOrderValues) {
         std::cout << i << ' ';
     }
     return 0;
